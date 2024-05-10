@@ -7,10 +7,15 @@ import {
 import { Socket } from 'socket.io';
 
 import { AuthService } from '@/auth/auth.service';
+import { MessageService } from '@/message/message.service';
+import { CreateMessageDto } from '@/message/dto/create-message.dto';
 
 @WebSocketGateway({ cors: { origin: '*' } })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly messageService: MessageService,
+  ) {}
 
   handleConnection(client: Socket) {
     const token = client.handshake.auth.token;
@@ -39,15 +44,25 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('message')
   async handleMessage(client: Socket, data: any) {
-    console.log(`Client ${client.id} sent message: ${data} to room: ${data}`);
+    console.log(
+      `Client ${client.id} sent message: ${data.content} to room: ${data.room_id}`,
+    );
+    const message = await this.messageService.createMessage(
+      { content: data.content, roomId: data.room_id },
+      data.owner.id,
+    );
+
+    client.emit('message', message);
+    client.to(data.room_id).emit('message', message);
   }
 
   @SubscribeMessage('isTyping')
-  async handleTypingNotification(client: Socket, roomId: any) {
+  async handleTypingNotification(
+    client: Socket,
+    { roomId, username }: { roomId: string; username: string },
+  ) {
     console.log(`Client ${client.id} typing message to room: ${roomId}`);
-    client
-      .to(roomId.toString())
-      .emit('isTyping', `${client.id} typing message...`);
+    client.to(roomId).emit('isTyping', `${username} typing message...`);
   }
 
   handleDisconnect(client: Socket) {

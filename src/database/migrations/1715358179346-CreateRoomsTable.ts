@@ -8,7 +8,7 @@ export class CreateRoomsTable1715358179346 implements MigrationInterface {
         columns: [
           {
             name: 'id',
-            type: 'uuid',
+            type: 'varchar',
             isPrimary: true,
           },
           {
@@ -21,7 +21,7 @@ export class CreateRoomsTable1715358179346 implements MigrationInterface {
           },
           {
             name: 'user_id',
-            type: 'uuid',
+            type: 'varchar',
           },
           {
             name: 'created_at',

@@ -8,7 +8,7 @@ export class CreateMessagesTable1715361017967 implements MigrationInterface {
         columns: [
           {
             name: 'id',
-            type: 'uuid',
+            type: 'varchar',
             isPrimary: true,
           },
           {
@@ -17,11 +17,11 @@ export class CreateMessagesTable1715361017967 implements MigrationInterface {
           },
           {
             name: 'user_id',
-            type: 'uuid',
+            type: 'varchar',
           },
           {
             name: 'room_id',
-            type: 'uuid',
+            type: 'varchar',
           },
           {
             name: 'created_at',

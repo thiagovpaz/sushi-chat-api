@@ -8,8 +8,8 @@ export class CreateRoomsMembersTable1715365674888
       new Table({
         name: 'rooms_members_users',
         columns: [
-          { name: 'room_id', type: 'uuid' },
-          { name: 'user_id', type: 'uuid' },
+          { name: 'room_id', type: 'varchar' },
+          { name: 'user_id', type: 'varchar' },
         ],
         foreignKeys: [
           {
