@@ -3,8 +3,11 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import typeormConfig from './config/typeorm.config';
-import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
+import { AuthModule } from '@/auth/auth.module';
+import { UserModule } from '@/user/user.module';
+import { ChatModule } from '@/chat/chat.module';
+import { RoomModule } from '@/room/room.module';
+import { MessageModule } from '@/message/message.module';
 
 @Module({
   imports: [
@@ -12,6 +15,9 @@ import { UserModule } from './user/user.module';
     TypeOrmModule.forRootAsync({ useFactory: typeormConfig }),
     AuthModule,
     UserModule,
+    RoomModule,
+    MessageModule,
+    ChatModule,
   ],
   controllers: [],
 })
