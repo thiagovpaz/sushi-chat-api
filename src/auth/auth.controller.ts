@@ -1,6 +1,11 @@
 import { ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Post } from '@nestjs/common';
-import { instanceToInstance } from 'class-transformer';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Post,
+  UseInterceptors,
+} from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 import { AuthResponse } from './interfaces/auth-response.interface';
@@ -19,10 +24,11 @@ export class AuthController {
     return this.authService.signup(signupCredentialsDto);
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @Post('/signin')
-  signin(
+  async signin(
     @Body() signinCredentialsDto: SigninCredentialsDto,
   ): Promise<AuthResponse> {
-    return instanceToInstance(this.authService.signin(signinCredentialsDto));
+    return this.authService.signin(signinCredentialsDto);
   }
 }

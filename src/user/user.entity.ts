@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Exclude } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 
 import { Room } from '@/room/room.entity';
 import { Message } from '@/message/message.entity';
@@ -27,6 +27,16 @@ export class User {
   @Exclude()
   @Column()
   password: string;
+
+  @Column({
+    nullable: true,
+  })
+  avatar: string;
+
+  @Expose()
+  get avatarUrl(): string | null {
+    return `${process.env.BASE_IMAGE_URL}avatars/${this.avatar}`;
+  }
 
   @OneToMany(() => Message, (message) => message.owner)
   messages: Message[];
